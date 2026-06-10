@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="ko" data-hero-active="a" data-mood="film">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스튜디오RP | 제품·룩북·상세페이지·누끼 촬영 스튜디오</title>
+  <meta name="description" content="쇼핑몰·브랜드가 바로 쓰는 커머스 사진. 상세페이지·화장품·룩북·누끼 촬영. 100% 인하우스, 자체 호리존 스튜디오 + 하이엔드 조명. 출장촬영 40만원부터." />
+  <meta property="og:title" content="스튜디오RP | 제품·룩북·상세페이지·누끼 촬영 스튜디오" />
+  <meta property="og:description" content="팔리는 제품 사진, 스튜디오알피가 찍습니다. 상세페이지·화장품·룩북·누끼 커머스 사진." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <style>
+/* ============================================================
+   STUDIO RP — 다크·하이엔드 모노크롬 랜딩
+   사진이 유일한 색. 배경/타입은 흑·백·회색 토큰만.
+   ============================================================ */
+
+:root {
+  /* 표면 (near-black, 살짝 떠있는 단계) */
+  --bg:      #08080a;
+  --bg-1:    #0f0f12;
+  --bg-2:    #16161a;
+  --bg-3:    #1d1d22;
+
+  /* 선 */
+  --line:    rgba(255,255,255,0.09);
+  --line-2:  rgba(255,255,255,0.16);
+  --line-3:  rgba(255,255,255,0.28);
+
+  /* 글자 */
+  --fg:      #f5f5f6;
+  --fg-2:    #c7c7cc;
+  --fg-mute: #8e8e96;
+  --fg-faint:#5b5b62;
+
+  /* 브랜드 액센트 — SRP에만 쓰는 에르메스 시그니처 오렌지 (모노크롬 위 유일한 컬러) */
+  --accent: #f37021;
+
+  /* 모서리 (Tweak: 각 ↔ 라운드) */
+  --r:   2px;
+  --r-lg: 3px;
+  --r-pill: 999px;
+
+  /* 헤드라인 스케일 (Tweak) */
+  --h-scale: 1;
+
+  --maxw: 1240px;
+  --pad: clamp(20px, 5vw, 64px);
+
+  --font: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+          "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: "SF Mono", ui-monospace, "Roboto Mono", Menlo, monospace;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-corner="round"] {
+  --r: 10px;
+  --r-lg: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  color-scheme: dark;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* 필름 그레인 오버레이 (Tweak) ------------------------------- */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .4s var(--ease);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+/* 무드(Mood) 프리셋 — 그레인 강도 + 헤드라인 드라마 + 비네트 (Tweak) */
+[data-mood="film"]   body::after { opacity: .07; }
+[data-mood="cinema"] body::after { opacity: .12; }
+:root[data-mood="clean"]  { --h-scale: .90; }
+:root[data-mood="film"]   { --h-scale: .96; }
+:root[data-mood="cinema"] { --h-scale: 1.06; }
+:root[data-mood="cinema"]::before {
+  content: ""; position: fixed; inset: 0; z-index: 9997; pointer-events: none;
+  background: radial-gradient(125% 96% at 50% 38%, transparent 50%, rgba(0,0,0,0.52) 100%);
+}
+
+/* 레이아웃 헬퍼 -------------------------------------------- */
+.wrap { max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad); }
+.section { padding-block: clamp(72px, 11vw, 150px); }
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  font-weight: 500;
+}
+.hr { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+/* 타이포 ------------------------------------------------- */
+.display {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  margin: 0;
+  font-size: calc(clamp(2.6rem, 7.4vw, 5.6rem) * var(--h-scale));
+}
+.h2 {
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  margin: 0;
+  font-size: clamp(2rem, 4.6vw, 3.4rem);
+}
+.h3 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+  font-size: clamp(1.25rem, 2.2vw, 1.6rem);
+}
+.lead { font-size: clamp(1.05rem, 1.7vw, 1.3rem); color: var(--fg-2); font-weight: 400; }
+.muted { color: var(--fg-mute); }
+.tabular { font-variant-numeric: tabular-nums; }
+.brand-rp { color: var(--accent); }
+.wordmark .brand-rp { letter-spacing: inherit; }
+.display .brand-rp { text-shadow: 0 0 38px color-mix(in srgb, var(--accent) 42%, transparent); }
+
+/* ============================================================
+   작업컷 플레이스홀더 — 셀렉컷 들어오면 교체
+   ============================================================ */
+.shot {
+  position: relative;
+  background-color: var(--bg-2);
+  background-image:
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,0.022) 0 2px,
+      transparent 2px 11px);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  isolation: isolate;
+}
+.shot::before {
+  /* 작은 프레임 글리프 */
+  content: "";
+  position: absolute;
+  width: 26px; height: 26px;
+  border: 1.5px solid var(--line-3);
+  border-radius: 2px;
+  top: 50%; left: 50%;
+  transform: translate(-50%, calc(-50% - 16px));
+  opacity: .5;
+}
+.shot > .shot-label {
+  position: relative;
+  z-index: 1;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  text-align: center;
+  padding: 8px 14px;
+  margin-top: 14px;
+  line-height: 1.7;
+}
+.shot > .shot-label b { color: var(--fg-mute); font-weight: 600; }
+.shot::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,0.04), transparent 60%);
+  z-index: 0;
+}
+.shot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; }
+.work-item img { display: block; width: 100%; aspect-ratio: 4/5; object-fit: cover; }
+.work-item.wide img { aspect-ratio: 16/10; }
+
+/* 버튼 -------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
+  padding: 15px 26px;
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  transition: transform .2s var(--ease), background .2s var(--ease),
+              border-color .2s var(--ease), color .2s var(--ease);
+  white-space: nowrap;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--fg); color: #0a0a0a; }
+.btn-primary:hover { background: #fff; transform: translateY(-2px); }
+.btn-ghost { background: transparent; color: var(--fg); border-color: var(--line-2); }
+.btn-ghost:hover { border-color: var(--line-3); background: rgba(255,255,255,0.04); }
+.btn-lg { padding: 18px 34px; font-size: 16px; }
+.btn .arrow { transition: transform .25s var(--ease); }
+.btn:hover .arrow { transform: translateX(4px); }
+
+/* ============================================================
+   상단 네비
+   ============================================================ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px var(--pad);
+  transition: background .3s var(--ease), border-color .3s var(--ease), padding .3s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(8,8,10,0.72);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  border-bottom-color: var(--line);
+  padding-block: 12px;
+}
+.wordmark {
+  font-weight: 800; font-size: 19px; letter-spacing: 0.12em;
+  display: flex; align-items: baseline; gap: 2px;
+}
+.wordmark .dot { color: var(--fg-mute); }
+.nav-links { display: flex; gap: 30px; align-items: center; }
+.nav-links a {
+  font-size: 14px; color: var(--fg-2); font-weight: 500; letter-spacing: 0.01em;
+  position: relative; padding: 4px 0;
+}
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 100%; bottom: -2px; height: 1px;
+  background: var(--fg); transition: right .3s var(--ease);
+}
+.nav-links a:hover { color: var(--fg); }
+.nav-links a:hover::after { right: 0; }
+.nav-cta { display: flex; align-items: center; gap: 14px; }
+.nav-tel {
+  font-family: var(--mono); font-size: 13px; letter-spacing: 0.04em; color: var(--fg-2);
+  font-variant-numeric: tabular-nums; transition: color .2s var(--ease);
+}
+.nav-tel:hover { color: var(--fg); }
+.nav-mini {
+  display: inline-grid; place-items: center;
+  width: 40px; height: 40px; border-radius: var(--r-pill);
+  border: 1px solid var(--line-2); color: var(--fg-2);
+  transition: border-color .2s var(--ease), color .2s, background .2s;
+  font-size: 15px;
+}
+.nav-mini:hover { border-color: var(--line-3); color: var(--fg); background: rgba(255,255,255,0.04); }
+.nav-toggle { display: none; }
+
+/* ============================================================
+   히어로 공통
+   ============================================================ */
+.hero { position: relative; }
+[data-hero] { display: none; }
+[data-hero-active="a"] [data-hero="a"],
+[data-hero-active="b"] [data-hero="b"],
+[data-hero-active="c"] [data-hero="c"] { display: block; }
+
+.hero-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--fg-2);
+  border: 1px solid var(--line-2); border-radius: var(--r-pill);
+  padding: 8px 16px; margin-bottom: 28px;
+  background: rgba(255,255,255,0.02);
+}
+.hero-kicker .pulse {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--fg);
+  box-shadow: 0 0 0 0 rgba(245,245,246,0.5);
+  animation: pulse 2.4s var(--ease) infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(245,245,246,0.45); }
+  70% { box-shadow: 0 0 0 9px rgba(245,245,246,0); }
+  100% { box-shadow: 0 0 0 0 rgba(245,245,246,0); }
+}
+.hero h1 { margin: 0 0 22px; }
+.hero .mood {
+  font-size: clamp(0.95rem, 1.5vw, 1.12rem);
+  color: var(--fg-mute); font-style: normal;
+  letter-spacing: 0.01em; margin-top: 4px;
+}
+.hero .mood::before { content: "“"; color: var(--fg-faint); }
+.hero .mood::after  { content: "”"; color: var(--fg-faint); }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; align-items: center; }
+.hero-sub { max-width: 30ch; }
+
+/* --- Hero A : 풀블리드 슬라이드쇼 --- */
+.heroA { height: 100dvh; display: grid; overflow: hidden; }
+.heroA .stage { position: absolute; inset: 0; z-index: 0; }
+.heroA .slide {
+  position: absolute; inset: 0; opacity: 0;
+  transition: opacity 1.1s var(--ease);
+}
+.heroA .slide.on { opacity: 1; }
+.heroA .slide .shot { width: 100%; height: 100%; border: 0; border-radius: 0; background: var(--bg); background-image: none; }
+.heroA .slide .shot::before { display: none; }
+.heroA .slide .shot img { transform: scale(1.05); will-change: transform; }
+.heroA .slide.on .shot img { animation: heroKenburns 10s var(--ease) forwards; }
+@keyframes heroKenburns { from { transform: scale(1.14); } to { transform: scale(1.05); } }
+.heroA .scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, #000 0%, #000 4%, rgba(0,0,0,0.5) 38%, rgba(0,0,0,0) 72%);
+}
+/* 이미지 자체에 직접 입히는 하단 그라데이션 — 박스 높이와 무관하게 이미지를 빈틈없이 덮음 */
+.heroA .slide .shot::after { display: none; }
+.heroA .content {
+  position: relative; z-index: 2;
+  align-self: end;
+  width: 100%; max-width: var(--maxw); margin: 0 auto;
+  padding: 0 var(--pad) clamp(56px, 9vh, 110px);
+}
+.heroA .hero-sub { max-width: 44ch; }
+.slide-dots {
+  position: absolute; bottom: clamp(24px, 5vh, 48px); right: var(--pad); z-index: 3;
+  display: flex; gap: 9px;
+}
+.slide-dots button {
+  width: 26px; height: 3px; border: 0; padding: 0; background: var(--line-3);
+  border-radius: 2px; transition: background .3s var(--ease);
+}
+.slide-dots button.on { background: var(--fg); }
+.heroA .frame-meta {
+  position: absolute; top: calc(72px + 1vh); right: var(--pad); z-index: 2;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em;
+  color: var(--fg-faint); text-transform: uppercase; text-align: right;
+}
+
+/* --- Hero B : 스플릿 (좌 카피 / 우 이미지) --- */
+.heroB { min-height: 100dvh; display: grid; align-items: center; padding-top: 88px; }
+.heroB .grid {
+  width: 100%; max-width: var(--maxw); margin: 0 auto; padding-inline: var(--pad);
+  display: grid; grid-template-columns: 1.05fr 0.95fr; gap: clamp(32px, 5vw, 72px);
+  align-items: center;
+}
+.heroB .right { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1.3fr 1fr; gap: 12px; height: min(76vh, 640px); }
+.heroB .right .shot:nth-child(1) { grid-row: span 2; }
+.heroB .hero-sub { max-width: 40ch; }
+
+/* --- Hero C : 센터 + 작업컷 마퀴 --- */
+.heroC { min-height: 100dvh; display: grid; align-content: center; padding: 120px 0 0; text-align: center; }
+.heroC .content { max-width: 980px; margin: 0 auto; padding-inline: var(--pad); }
+.heroC h1 { margin-inline: auto; }
+.heroC .hero-sub { max-width: 52ch; margin-inline: auto; }
+.heroC .hero-actions { justify-content: center; }
+.heroC .hero-kicker { margin-inline: auto; }
+.marquee {
+  margin-top: clamp(48px, 7vh, 88px);
+  overflow: hidden; position: relative;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track { display: flex; gap: 14px; width: max-content; animation: marquee 38s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee .shot { width: clamp(220px, 26vw, 320px); height: clamp(280px, 32vw, 400px); flex: none; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* ============================================================
+   신뢰요소
+   ============================================================ */
+.trust { border-top: 1px solid var(--line); }
+.trust .head { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: clamp(40px, 6vw, 72px); }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.feature {
+  background: var(--bg); padding: clamp(28px, 3vw, 44px);
+  display: flex; flex-direction: column; gap: 16px; min-height: 280px;
+  transition: background .3s var(--ease);
+}
+.feature:hover { background: var(--bg-1); }
+.feature .num { font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em; color: var(--fg-faint); }
+.feature .ico { width: 34px; height: 34px; border: 1.5px solid var(--line-3); border-radius: var(--r); position: relative; margin-bottom: 6px; }
+.feature .ico::before, .feature .ico::after { content: ""; position: absolute; background: var(--fg-mute); }
+.feature.f1 .ico::before { inset: 8px; border: 1.5px solid var(--fg-mute); background: none; border-radius: 1px; }
+.feature.f2 .ico::before { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid var(--fg-mute); background: none; top: 8px; left: 8px; }
+.feature.f2 .ico::after  { width: 6px; height: 6px; border-radius: 50%; background: var(--fg-mute); bottom: 8px; right: 8px; }
+.feature.f3 .ico::before { width: 16px; height: 2px; top: 11px; left: 7px; }
+.feature.f3 .ico::after  { width: 10px; height: 2px; top: 19px; left: 7px; }
+.feature p { margin: 0; color: var(--fg-mute); font-size: 15px; }
+.feature .ft { color: var(--fg); font-weight: 700; font-size: clamp(1.05rem, 1.5vw, 1.22rem); letter-spacing: -0.02em; }
+
+/* 레퍼런스 로고 띠 — 무한 루프 마퀴 */
+.refs { margin-top: clamp(44px, 6vw, 72px); }
+.refs .label { text-align: center; margin-bottom: 26px; }
+.logo-marquee {
+  overflow: hidden; position: relative; padding: 4px 0;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+          mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+}
+.logo-track { display: flex; align-items: center; gap: clamp(18px, 2.4vw, 30px); width: max-content; animation: logoMarquee 48s linear infinite; }
+.logo-marquee:hover .logo-track { animation-play-state: paused; }
+@keyframes logoMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.logo-cell {
+  flex: none; width: clamp(124px, 14vw, 158px); height: clamp(64px, 7.5vw, 84px);
+  background: transparent; display: grid; place-items: center; padding: 10px 18px;
+  opacity: .6; transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.logo-cell:hover { opacity: 1; transform: translateY(-3px); }
+.logo-cell img {
+  max-width: 100%; max-height: 100%; width: auto; height: auto;
+  object-fit: contain; display: block;
+  filter: brightness(0) invert(1);   /* 어떤 로고든 단색 화이트로 */
+}
+.logo-cell.tall img { max-height: 85%; }   /* 심볼+워드마크 결합형(롤렉스·튜더 등) 시각매스 균형 */
+.logo-cell .logo-fallback {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; color: var(--fg-2);
+  text-transform: uppercase; font-weight: 700; text-align: center;
+}
+@media (prefers-reduced-motion: reduce) { .logo-track { animation: none; flex-wrap: wrap; justify-content: center; } }
+.refs .note { text-align: center; margin-top: 18px; font-size: 13px; color: var(--fg-faint); }
+
+/* ============================================================
+   포트폴리오 (Works) 갤러리
+   ============================================================ */
+.works { border-top: 0; margin-top: -1px; }
+.works .head { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; margin-bottom: clamp(32px, 4vw, 56px); }
+.works .head .h2 { margin-top: 16px; }
+.work-filter { display: flex; flex-wrap: wrap; gap: 9px; }
+.work-filter .fbtn {
+  padding: 10px 18px; font-size: 13px; font-weight: 500; font-family: inherit;
+  border: 1px solid var(--line-2); border-radius: var(--r-pill); color: var(--fg-2);
+  background: transparent; transition: all .18s var(--ease);
+}
+.work-filter .fbtn:hover { border-color: var(--line-3); color: var(--fg); }
+.work-filter .fbtn.on { background: var(--accent); border-color: var(--accent); color: #0a0a0a; font-weight: 600; }
+.work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.work-item.hide { display: none; }
+.work-item { position: relative; overflow: hidden; border-radius: var(--r-lg); }
+.work-item.hide { display: none; }
+.work-item .shot { aspect-ratio: 4/5; border-radius: var(--r-lg); }
+.work-item image-slot { display: block; width: 100%; height: auto; aspect-ratio: 4/5; }
+.work-item.wide { grid-column: span 2; }
+.work-item.wide .shot { aspect-ratio: 16/10; }
+.work-item.wide image-slot { aspect-ratio: 16/10; }
+.work-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 16px 18px;
+  background: linear-gradient(to top, rgba(8,8,10,0.9), transparent);
+  opacity: 0; transform: translateY(6px); transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.work-item:hover .work-cap { opacity: 1; transform: none; }
+.work-cap .t { font-size: 14px; font-weight: 600; color: var(--fg); }
+.work-cap .c { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+.works .more-line { margin-top: clamp(28px, 4vw, 44px); text-align: center; }
+@media (max-width: 980px) {
+  .work-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .work-grid { grid-template-columns: 1fr; }
+  .work-item.wide { grid-column: auto; }
+  .work-item.wide .shot { aspect-ratio: 4/5; }
+  .work-item.wide image-slot { aspect-ratio: 4/5; }
+  .works .head { grid-template-columns: 1fr; align-items: start; gap: 20px; }
+}
+
+/* ============================================================
+   About / 스튜디오
+   ============================================================ */
+.about { border-top: 1px solid var(--line); background: var(--bg-1); }
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(36px, 5vw, 80px); align-items: center; }
+.about-copy .h2 { margin-top: 16px; }
+.about-copy .lead { margin-top: 22px; }
+.about-points { list-style: none; margin: 30px 0 34px; padding: 0; display: flex; flex-direction: column; gap: 0; }
+.about-points li { display: flex; gap: 16px; align-items: baseline; color: var(--fg-2); font-size: 15px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.about-points li:first-child { padding-top: 0; }
+.about-points .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--accent); min-width: 58px; }
+.about-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.about-visual .shot { aspect-ratio: 1/1; }
+.about-visual .shot.big { grid-column: 1 / -1; aspect-ratio: 16/9; }
+.about-visual .shot-photo {
+  position: relative; margin: 0; overflow: hidden;
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  background-size: cover; background-position: center;
+}
+.about-visual .shot-photo .shot-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 16px 18px;
+  background: linear-gradient(to top, rgba(8,8,10,0.82), transparent);
+}
+.about-visual .shot-photo .shot-cap b { font-size: 14px; font-weight: 600; color: var(--fg); }
+.about-visual .shot-photo .shot-cap span { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+.about-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; margin-top: clamp(40px, 5vw, 64px); }
+.about-stats .stat { background: var(--bg); padding: clamp(24px, 3vw, 38px) 20px; text-align: center; }
+.about-stats .n { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800; letter-spacing: -0.03em; color: var(--fg); line-height: 1; }
+.about-stats .l { font-size: 13px; color: var(--fg-mute); margin-top: 10px; }
+@media (max-width: 880px) {
+  .about-grid { grid-template-columns: 1fr; gap: 36px; }
+  .about-stats { grid-template-columns: 1fr 1fr; }
+}
+
+/* ============================================================
+   서비스 + 가격감
+   ============================================================ */
+.services { border-top: 1px solid var(--line); background: var(--bg-1); }
+.svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(40px, 5vw, 64px); }
+.svc {
+  border: 1px solid var(--line); border-radius: var(--r-lg);
+  overflow: hidden; background: var(--bg);
+  display: flex; flex-direction: column;
+  transition: border-color .3s var(--ease), transform .3s var(--ease);
+}
+.svc:hover { border-color: var(--line-3); transform: translateY(-4px); }
+.svc .shot { aspect-ratio: 4/3; border: 0; border-radius: 0; border-bottom: 1px solid var(--line); }
+.svc .body { padding: clamp(22px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.svc .tag { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--fg-faint); }
+.svc h3 { font-size: clamp(1.2rem, 1.8vw, 1.45rem); }
+.svc p { margin: 0; color: var(--fg-mute); font-size: 15px; flex: 1; }
+.svc .more { font-size: 14px; font-weight: 600; color: var(--fg-2); display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; }
+.svc:hover .more { color: var(--fg); }
+.svc .more .arrow { transition: transform .25s var(--ease); }
+.svc:hover .more .arrow { transform: translateX(4px); }
+
+/* 가격감 블록 */
+.price {
+  margin-top: 16px;
+  border: 1px solid var(--line-2); border-radius: var(--r-lg);
+  padding: clamp(28px, 3.4vw, 48px);
+  display: grid; grid-template-columns: auto 1fr auto; gap: clamp(20px, 3vw, 48px); align-items: center;
+  background:
+    radial-gradient(140% 180% at 0% 0%, rgba(255,255,255,0.045), transparent 55%),
+    var(--bg);
+}
+.price .big { font-size: clamp(2.1rem, 4vw, 3.1rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+.price .big small { font-size: 0.42em; font-weight: 600; color: var(--fg-mute); letter-spacing: 0; margin-left: 6px; }
+.price .pdesc { color: var(--fg-2); font-size: 15px; }
+.price .pdesc b { color: var(--fg); font-weight: 600; }
+.price .vat { font-family: var(--mono); font-size: 11px; color: var(--fg-faint); letter-spacing: 0.1em; margin-top: 6px; }
+
+/* ============================================================
+   Process / 작업 흐름
+   ============================================================ */
+.process { border-top: 1px solid var(--line); }
+.process .head { text-align: center; margin-bottom: clamp(40px, 6vw, 68px); }
+.process .head .h2 { margin-top: 16px; }
+.process .head .lead { margin: 18px auto 0; max-width: 52ch; }
+.step-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.step { background: var(--bg); padding: clamp(26px, 2.6vw, 36px) clamp(20px, 2vw, 26px); display: flex; flex-direction: column; gap: 12px; min-height: 210px; transition: background .3s var(--ease); }
+.step:hover { background: var(--bg-1); }
+.step .sn { font-family: var(--mono); font-size: 26px; font-weight: 800; letter-spacing: -0.02em; color: var(--line-3); line-height: 1; transition: color .3s var(--ease); }
+.step:hover .sn { color: var(--accent); }
+.step h3 { margin-top: 4px; }
+.step p { margin: 0; color: var(--fg-mute); font-size: 14px; }
+@media (max-width: 920px) {
+  .step-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
+  .step-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   후기 / Social proof
+   ============================================================ */
+.voice { border-top: 1px solid var(--line); background: var(--bg-1); }
+.voice .head { text-align: center; margin-bottom: clamp(36px, 5vw, 60px); }
+.voice .head .h2 { margin-top: 16px; }
+.voice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.vcard { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--bg); padding: clamp(26px, 2.8vw, 38px); display: flex; flex-direction: column; gap: 18px; transition: border-color .3s var(--ease); }
+.vcard:hover { border-color: var(--line-2); }
+.vcard .quote { color: var(--fg); font-size: clamp(1rem, 1.4vw, 1.1rem); line-height: 1.6; letter-spacing: -0.01em; flex: 1; margin: 0; }
+.vcard .quote::before { content: "“"; color: var(--accent); font-size: 1.8em; line-height: 0; vertical-align: -0.4em; margin-right: 4px; }
+.vcard .by { display: flex; flex-direction: column; gap: 3px; border-top: 1px solid var(--line); padding-top: 16px; margin: 0; }
+.vcard .by .who { font-size: 14px; font-weight: 600; color: var(--fg-2); }
+.vcard .by .cat { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg-faint); }
+.voice .fit { text-align: center; margin-top: clamp(32px, 4vw, 48px); color: var(--fg-mute); font-size: 15px; max-width: 64ch; margin-inline: auto; }
+.voice .fit b { color: var(--fg-2); font-weight: 600; }
+.voice .fit-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 18px; }
+.voice .fit-tags span { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--fg-mute); border: 1px solid var(--line-2); border-radius: var(--r-pill); padding: 8px 14px; }
+.voice .note { text-align: center; margin-top: 24px; font-size: 12px; color: var(--fg-faint); }
+@media (max-width: 820px) {
+  .voice-grid { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   문의 CTA
+   ============================================================ */
+.contact { border-top: 1px solid var(--line); }
+.contact .grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(40px, 6vw, 90px); align-items: start; }
+.contact .promise {
+  margin-top: 34px; padding-top: 28px; border-top: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 18px;
+}
+.contact .promise .row { display: flex; gap: 14px; align-items: flex-start; }
+.contact .promise .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; color: var(--fg-faint); text-transform: uppercase; min-width: 92px; padding-top: 3px; }
+.contact .promise .v { color: var(--fg-2); font-size: 15px; }
+.contact .promise .v b { color: var(--fg); font-weight: 600; }
+
+/* 폼 */
+.form-card {
+  border: 1px solid var(--line-2); border-radius: var(--r-lg);
+  background: var(--bg-1); padding: clamp(26px, 3vw, 44px);
+  position: relative; overflow: hidden;
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.field { display: flex; flex-direction: column; gap: 9px; }
+.field.full { grid-column: 1 / -1; }
+.field label { font-size: 13px; font-weight: 600; color: var(--fg-2); letter-spacing: -0.01em; }
+.field label .req { color: var(--fg); margin-left: 3px; }
+.field label .opt { color: var(--fg-faint); font-weight: 400; margin-left: 6px; font-size: 12px; }
+.control {
+  width: 100%; background: var(--bg-3); border: 1px solid var(--line-2);
+  border-radius: var(--r); color: var(--fg); font-family: inherit; font-size: 15px;
+  padding: 14px 15px; transition: border-color .2s var(--ease), background .2s var(--ease);
+  appearance: none;
+}
+.control::placeholder { color: var(--fg-faint); }
+.control:focus { outline: none; border-color: var(--line-3); background: var(--bg-2); }
+.control:focus-visible { box-shadow: 0 0 0 3px rgba(255,255,255,0.06); }
+select.control { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e96' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; }
+select.control:invalid { color: var(--fg-faint); }
+.control.err { border-color: #d4d4d8; box-shadow: 0 0 0 3px rgba(255,255,255,0.05); }
+.err-msg { font-size: 12px; color: var(--fg-2); display: none; }
+.field.invalid .err-msg { display: block; }
+
+/* 촬영종류 칩 (라디오) */
+.chips { display: flex; flex-wrap: wrap; gap: 9px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
+.chip span {
+  display: inline-block; padding: 11px 16px; font-size: 14px; font-weight: 500;
+  border: 1px solid var(--line-2); border-radius: var(--r-pill); color: var(--fg-2);
+  transition: all .18s var(--ease); user-select: none;
+}
+.chip input:hover + span { border-color: var(--line-3); color: var(--fg); }
+.chip input:checked + span { background: var(--fg); color: #0a0a0a; border-color: var(--fg); font-weight: 600; }
+.chip input:focus-visible + span { box-shadow: 0 0 0 3px rgba(255,255,255,0.12); }
+
+.form-foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 24px; flex-wrap: wrap; }
+.form-foot .hint { font-size: 13px; color: var(--fg-faint); }
+.form-card .btn-primary { width: auto; }
+
+/* 완료 화면 */
+.thanks {
+  position: absolute; inset: 0; z-index: 5;
+  background: var(--bg-1);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px;
+  opacity: 0; visibility: hidden; transform: translateY(8px);
+  transition: opacity .5s var(--ease), transform .5s var(--ease), visibility .5s;
+}
+.thanks.show { opacity: 1; visibility: visible; transform: none; }
+.thanks .check {
+  width: 64px; height: 64px; border-radius: 50%; border: 1.5px solid var(--line-3);
+  display: grid; place-items: center; margin-bottom: 26px; position: relative;
+}
+.thanks .check::after {
+  content: ""; width: 22px; height: 12px; border-left: 2px solid var(--fg); border-bottom: 2px solid var(--fg);
+  transform: rotate(-45deg) translate(1px, -2px);
+}
+.thanks h3 { margin: 0 0 12px; }
+.thanks p { color: var(--fg-mute); margin: 0 0 8px; max-width: 38ch; }
+.thanks .summary {
+  margin: 22px 0 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em;
+  color: var(--fg-2); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 14px 18px; background: var(--bg); max-width: 90%;
+}
+.thanks .summary b { color: var(--fg); }
+
+/* 개인정보 동의 */
+.consent { margin-top: 22px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; flex-direction: column; gap: 12px; }
+.consent-row { display: flex; gap: 11px; align-items: flex-start; cursor: pointer; font-size: 13px; color: var(--fg-mute); line-height: 1.5; }
+.consent-row input { appearance: none; -webkit-appearance: none; width: 18px; height: 18px; flex: none; margin-top: 1px; border: 1px solid var(--line-3); border-radius: var(--r); background: var(--bg-3); cursor: pointer; transition: background .18s var(--ease), border-color .18s var(--ease); position: relative; }
+.consent-row input:checked { background: var(--accent); border-color: var(--accent); }
+.consent-row input:checked::after { content: ""; position: absolute; left: 5px; top: 1px; width: 5px; height: 10px; border-right: 2px solid #0a0a0a; border-bottom: 2px solid #0a0a0a; transform: rotate(45deg); }
+.consent-row b { color: var(--fg-2); font-weight: 600; }
+.consent-link { color: var(--fg-2); text-decoration: underline; text-underline-offset: 2px; }
+.consent-link:hover { color: var(--fg); }
+.consent.invalid input#consent-required { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(243,112,33,0.22); }
+.consent-err { display: none; font-size: 12px; color: var(--accent); margin: 0; }
+.consent.invalid .consent-err { display: block; }
+
+/* 처리방침 모달 */
+.modal { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; padding: 20px; }
+.modal.open { display: flex; }
+.modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.modal-box { position: relative; z-index: 1; background: var(--bg-1); border: 1px solid var(--line-2); border-radius: var(--r-lg); max-width: 600px; width: 100%; max-height: 82vh; overflow-y: auto; padding: clamp(28px, 4vw, 44px); }
+.modal-box h3 { margin: 0 0 6px; }
+.modal-box .m-sub { color: var(--fg-mute); font-size: 13px; margin: 0 0 22px; }
+.modal-box h4 { font-size: 14px; color: var(--fg); margin: 20px 0 6px; }
+.modal-box p { color: var(--fg-2); font-size: 14px; line-height: 1.7; margin: 0; }
+.modal-close { position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line-2); background: var(--bg-2); color: var(--fg-2); font-size: 15px; display: grid; place-items: center; transition: color .2s var(--ease), border-color .2s var(--ease); }
+.modal-close:hover { color: var(--fg); border-color: var(--line-3); }
+
+/* ============================================================
+   푸터
+   ============================================================ */
+.footer { border-top: 1px solid var(--line); background: var(--bg); padding-block: clamp(56px, 7vw, 88px); }
+.footer .top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 40px; padding-bottom: 48px; border-bottom: 1px solid var(--line); }
+.footer .wordmark { font-size: 26px; margin-bottom: 18px; }
+.footer .slogan { color: var(--fg-mute); font-size: 15px; max-width: 34ch; }
+.footer .col h4 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--fg-faint); margin: 0 0 16px; font-weight: 500; }
+.footer .col a, .footer .col p { display: block; color: var(--fg-2); font-size: 15px; margin: 0 0 11px; transition: color .2s var(--ease); }
+.footer .col a:hover { color: var(--fg); }
+.footer .biz { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 36px; color: var(--fg-faint); font-size: 13px; }
+.footer .biz span { white-space: nowrap; }
+.footer .legal { margin-top: 22px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: center; color: var(--fg-faint); font-size: 13px; }
+.footer .film-link { font-size: 13px; color: var(--fg-faint); }
+.footer .film-link a { color: var(--fg-mute); text-decoration: underline; text-underline-offset: 3px; }
+.footer .film-link a:hover { color: var(--fg); }
+
+/* ============================================================
+   플로팅 CTA (상시 노출)
+   ============================================================ */
+.float-cta {
+  position: fixed; z-index: 95; right: clamp(16px, 3vw, 32px); bottom: clamp(16px, 3vw, 32px);
+  display: flex; flex-direction: column; gap: 10px; align-items: flex-end;
+  transition: transform .4s var(--ease), opacity .4s var(--ease);
+}
+.float-cta.hide { transform: translateY(140%); opacity: 0; pointer-events: none; }
+.float-row { display: flex; gap: 10px; }
+.fab {
+  display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  background: var(--bg-2); border: 1px solid var(--line-2); color: var(--fg);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5); transition: all .2s var(--ease);
+  font-size: 13px; font-weight: 600; letter-spacing: 0.02em;
+}
+.fab:hover { transform: translateY(-3px); border-color: var(--line-3); background: var(--bg-3); }
+.fab.fab-tel { background: #22c55e; border-color: #22c55e; color: #111; }
+.fab.fab-tel:hover { background: #16a34a; border-color: #16a34a; }
+.fab.fab-kakao { background: #FEE500; border-color: #FEE500; color: #3C1E1E; }
+.fab.fab-kakao:hover { background: #f4d600; border-color: #f4d600; }
+.fab-main {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: auto; border-radius: var(--r-pill); padding: 0 24px; height: 56px; gap: 10px;
+  background: var(--fg); color: #0a0a0a; border: 0; font-weight: 700; font-size: 15px;
+  box-shadow: 0 10px 36px rgba(0,0,0,0.6);
+}
+.fab-main:hover { transform: translateY(-3px); background: #fff; }
+
+/* ============================================================
+   진입 애니메이션
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal.d1 { transition-delay: .08s; }
+  .reveal.d2 { transition-delay: .16s; }
+  .reveal.d3 { transition-delay: .24s; }
+}
+
+/* ============================================================
+   반응형
+   ============================================================ */
+@media (max-width: 980px) {
+  .nav-links { display: none; }
+  .nav-tel { display: none; }
+  .nav-toggle { display: inline-grid; }
+  .heroB .grid { grid-template-columns: 1fr; gap: 36px; }
+  .heroB .right { height: 52vh; }
+  .contact .grid { grid-template-columns: 1fr; }
+  .footer .top { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer .col.brand { grid-column: 1 / -1; }
+  .price { grid-template-columns: 1fr; gap: 22px; text-align: left; }
+}
+@media (max-width: 720px) {
+  .feature-grid { grid-template-columns: 1fr; }
+  .svc-grid { grid-template-columns: 1fr; }
+  .trust .head { grid-template-columns: 1fr; gap: 16px; }
+  .logo-cell { width: clamp(116px, 38vw, 150px); height: clamp(64px, 20vw, 84px); }
+  .form-grid { grid-template-columns: 1fr; }
+  .footer .top { grid-template-columns: 1fr; }
+  .nav-cta .btn span.full { display: none; }
+  .float-cta { left: clamp(16px, 3vw, 32px); }
+  .fab-main { flex: 1; justify-content: center; }
+  .heroA .frame-meta { display: none; }
+}
+@media (max-width: 460px) {
+  .hero-actions { width: 100%; }
+  .hero-actions .btn { flex: 1; justify-content: center; }
+}
+
+</style>
+</head>
+<body>
+
+  <!-- ================= 네비 ================= -->
+  <header class="nav" data-screen-label="Nav">
+    <a class="wordmark" href="#top" aria-label="STUDIO RP 홈">STUDIO
+RP
+.</a>
+    <nav class="nav-links" aria-label="주요 메뉴">
+      <a href="#works">포트폴리오</a>
+      <a href="#about">스튜디오</a>
+      <a href="#services">서비스</a>
+      <a href="#contact">문의</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="nav-tel" href="tel:070-8671-8216">070-8671-8216</a>
+      <a class="btn btn-primary" href="#contact" style="height: 40px"><span class="full">촬영 </span>문의하기</a>
+      <button class="nav-mini nav-toggle" aria-label="메뉴">≡</button>
+    </div>
+  </header>
+
+  <main id="top">
+
+  <!-- ================= 히어로 ================= -->
+  <section class="hero" data-screen-label="Hero" id="work">
+
+    <!-- ── Hero A : 풀블리드 슬라이드쇼 ── -->
+    <div data-hero="a">
+      <div class="heroA">
+        <div class="stage">
+          <div class="slide on"><div class="shot"><img src="hero-yunjac.jpg" alt="연작 뷰티 제품 모델 촬영"></div></div>
+          <div class="slide"><div class="shot"><img src="hero-santa.jpg" alt="산타마리아노벨라 향수·뷰티 제품 촬영" style="object-position: center 35%"></div></div>
+          <div class="slide"><div class="shot"><img src="hero-artisee2.jpg" alt="아티제 가을 베이커리 푸드 연출 촬영"></div></div>
+        </div>
+        <div class="scrim"></div>
+        <div class="content">
+          <div class="hero-kicker reveal in"><span class="pulse"></span>제품 · 룩북 · 상세페이지 · 화장품</div>
+          <h1 class="display reveal in d1">팔리는 제품 사진,<br><span class="brand-rp">S</span>tudio-<span class="brand-rp">RP</span>가 찍습니다.</h1>
+          <p class="lead hero-sub reveal in d2" style="font-size: 21px; line-height: 1.55;">룩북 · 화장품 · 상세페이지 · 누끼<br>— 쇼핑몰과 브랜드가 바로 쓰는 커머스 사진.</p>
+          <p class="mood reveal in d2">제품의 본질과 숨겨진 가치를 단 한 장의 프레임에.</p>
+          <div class="hero-actions reveal in d3">
+            <a class="btn btn-primary btn-lg" href="#contact">촬영 문의하기 <span class="arrow">→</span></a>
+            <a class="btn btn-ghost btn-lg" href="#services">서비스 보기</a>
+          </div>
+        </div>
+        <div class="slide-dots" role="tablist" aria-label="대표 작업 슬라이드">
+          <button class="on" aria-label="슬라이드 1"></button>
+          <button aria-label="슬라이드 2"></button>
+          <button aria-label="슬라이드 3"></button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ================= 포트폴리오 (Works) ================= -->
+  <section class="works section" id="works" data-screen-label="Works">
+    <div class="wrap">
+      <div class="head">
+        <div class="reveal">
+          <p class="eyebrow">SELECTED WORK</p>
+          <h2 class="h2">찍은 사진이,<br>그대로 포트폴리오입니다.</h2>
+        </div>
+        <div class="work-filter reveal d1" role="tablist" aria-label="작업 분류">
+          <button class="fbtn on" data-filter="all">전체</button>
+          <button class="fbtn" data-filter="product">제품</button>
+          <button class="fbtn" data-filter="beauty">뷰티</button>
+          <button class="fbtn" data-filter="food">푸드</button>
+          <button class="fbtn" data-filter="fashion">패션</button>
+          <button class="fbtn" data-filter="commerce">커머스</button>
+        </div>
+      </div>
+
+      <div class="work-grid">
+        <article class="work-item reveal" data-cat="product"><img src="work/product-1.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d1" data-cat="product"><img src="work/product-2.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-3.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="product"><img src="work/product-4.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d1" data-cat="product"><img src="work/product-5.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-6.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="product"><img src="work/product-7.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d1" data-cat="product"><img src="work/product-8.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-9.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="product"><img src="work/product-10.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d1" data-cat="product"><img src="work/product-11.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-12.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="product"><img src="work/product-13.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d1" data-cat="product"><img src="work/product-14.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-15.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="product"><img src="work/product-16.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d1" data-cat="product"><img src="work/product-17.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-18.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-1.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-2.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-3.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-4.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-5.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-6.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-7.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-8.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-9.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-10.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-11.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-12.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-13.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-14.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-15.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-16.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-17.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-18.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-19.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-20.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d2" data-cat="beauty"><img src="work/beauty-21.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="beauty"><img src="work/beauty-22.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal d1" data-cat="beauty"><img src="work/beauty-23.jpg" alt="뷰티 촬영" loading="lazy"><div class="work-cap"><span class="t">뷰티 촬영</span><span class="c">BEAUTY</span></div></article>
+        <article class="work-item reveal" data-cat="food"><img src="work/food-1.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d1" data-cat="food"><img src="work/food-2.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d2" data-cat="food"><img src="work/food-3.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal" data-cat="food"><img src="work/food-4.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d1" data-cat="food"><img src="work/food-5.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d2" data-cat="food"><img src="work/food-6.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal" data-cat="food"><img src="work/food-7.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d1" data-cat="food"><img src="work/food-8.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d2" data-cat="food"><img src="work/food-9.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal" data-cat="food"><img src="work/food-10.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d1" data-cat="food"><img src="work/food-11.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d2" data-cat="food"><img src="work/food-12.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal" data-cat="food"><img src="work/food-13.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d1" data-cat="food"><img src="work/food-14.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d2" data-cat="food"><img src="work/food-15.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal" data-cat="food"><img src="work/food-16.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d1" data-cat="food"><img src="work/food-17.jpg" alt="푸드 촬영" loading="lazy"><div class="work-cap"><span class="t">푸드 촬영</span><span class="c">FOOD</span></div></article>
+        <article class="work-item reveal d2" data-cat="product"><img src="work/product-19.jpg" alt="제품 촬영" loading="lazy"><div class="work-cap"><span class="t">제품 촬영</span><span class="c">PRODUCT</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-1.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-2.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-3.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-4.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-5.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-6.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-7.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-8.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-9.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-10.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-11.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-12.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-13.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-14.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-15.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-16.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-17.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-18.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-19.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-20.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-21.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-22.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-23.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-24.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-25.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-26.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-27.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-28.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-29.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-30.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-31.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="fashion"><img src="work/fashion-32.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d2" data-cat="fashion"><img src="work/fashion-33.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal" data-cat="fashion"><img src="work/fashion-34.jpg" alt="패션 촬영" loading="lazy"><div class="work-cap"><span class="t">패션 촬영</span><span class="c">FASHION</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-1.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d2" data-cat="commerce"><img src="work/commerce-2.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal" data-cat="commerce"><img src="work/commerce-3.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-4.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d2" data-cat="commerce"><img src="work/commerce-5.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal" data-cat="commerce"><img src="work/commerce-6.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-7.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d2" data-cat="commerce"><img src="work/commerce-8.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal" data-cat="commerce"><img src="work/commerce-9.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-10.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d2" data-cat="commerce"><img src="work/commerce-11.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal" data-cat="commerce"><img src="work/commerce-12.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-13.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d2" data-cat="commerce"><img src="work/commerce-14.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal" data-cat="commerce"><img src="work/commerce-15.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-16.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d2" data-cat="commerce"><img src="work/commerce-17.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal" data-cat="commerce"><img src="work/commerce-18.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+        <article class="work-item reveal d1" data-cat="commerce"><img src="work/commerce-19.jpg" alt="커머스 촬영" loading="lazy"><div class="work-cap"><span class="t">커머스 촬영</span><span class="c">COMMERCE</span></div></article>
+      </div>
+
+      <div class="more-line reveal">
+        <button class="btn btn-ghost btn-lg" id="work-more" type="button">작업 더보기 <span class="arrow">↓</span></button>
+        <a class="btn btn-primary btn-lg" href="#contact">견적 문의 <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 신뢰요소 ================= -->
+  <section class="trust section" id="studio" data-screen-label="Studio / Trust">
+    <div class="wrap">
+      <div class="head">
+        <div class="reveal">
+          <p class="eyebrow">WHY STUDIO RP</p>
+          <h2 class="h2" style="margin-top: 18px; font-size: 42px">맡기는 이유는 결국,<br>'결과' 입니다.</h2>
+        </div>
+        <p class="lead reveal d1" style="padding-bottom:6px">예쁜 사진도 중요하지만, 받아서 바로 매출로 연결되는 사진.<br>그것이 우리의 기준입니다.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature f1 reveal">
+          <span class="ico"></span>
+          <span class="num">01</span>
+          <span class="ft">재촬영 없는 일관된 품질</span>
+          <p>같은 빛 · 같은 기준으로 톤이 흔들리지 않습니다.<br>여러 번 찍어 고를 필요가 없습니다.</p>
+        </div>
+        <div class="feature f2 reveal d1">
+          <span class="ico"></span>
+          <span class="num">02</span>
+          <span class="ft">받아서 바로 쓰는 완성 파일</span>
+          <p>색 · 디테일 · 누끼 보정까지 포함해 납품합니다.<br>쇼핑몰 · 상세페이지에 그대로 올리세요.</p>
+        </div>
+        <div class="feature f3 reveal d2">
+          <span class="ico"></span>
+          <span class="num">03</span>
+          <span class="ft">문의부터 납품까지 빠르게</span>
+          <p>영업시간 내 30분~1시간 회신.<br>일정 · 견적을 군더더기 없이 진행합니다.</p>
+        </div>
+      </div>
+
+      <!-- 레퍼런스 로고 띠 — 무한 루프 마퀴 -->
+      <div class="refs reveal">
+        <p class="eyebrow label">함께한 브랜드</p>
+        <div class="logo-marquee">
+          <div class="logo-track">
+            <!-- ===== SET 1 ===== -->
+            <div class="logo-cell tall"><img src="partners/rolex.png" alt="ROLEX" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;ROLEX&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/andar.png" alt="andar" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;andar&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/crocs.png" alt="Crocs" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;Crocs&lt;/span&gt;'"></div>
+            <div class="logo-cell tall"><img src="partners/tudor.png" alt="TUDOR" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;TUDOR&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/tirtir.png" alt="TIRTIR" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;TIRTIR&lt;/span&gt;'"></div>
+            <div class="logo-cell tall"><img src="partners/brand05.svg" alt="브랜드" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;BRAND&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/delonghi.png" alt="De'Longhi" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;De&apos;Longhi&lt;/span&gt;'"></div>
+            <div class="logo-cell tall"><img src="partners/heinz.svg" alt="Heinz" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;Heinz&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/adidas.svg" alt="adidas" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;adidas&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/uni3.png" alt="UNIQLO" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;UNIQLO&lt;/span&gt;'"></div>
+            <div class="logo-cell"><img src="partners/senka.png" alt="SENKA" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;SENKA&lt;/span&gt;'"></div>
+            <!-- ===== SET 2 (복제 — seamless loop, 화면낭독 제외) ===== -->
+            <div class="logo-cell tall" aria-hidden="true"><img src="partners/rolex.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;ROLEX&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/andar.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;andar&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/crocs.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;Crocs&lt;/span&gt;'"></div>
+            <div class="logo-cell tall" aria-hidden="true"><img src="partners/tudor.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;TUDOR&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/tirtir.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;TIRTIR&lt;/span&gt;'"></div>
+            <div class="logo-cell tall" aria-hidden="true"><img src="partners/brand05.svg" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;BRAND&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/delonghi.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;De&apos;Longhi&lt;/span&gt;'"></div>
+            <div class="logo-cell tall" aria-hidden="true"><img src="partners/heinz.svg" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;Heinz&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/adidas.svg" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;adidas&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/uni3.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;UNIQLO&lt;/span&gt;'"></div>
+            <div class="logo-cell" aria-hidden="true"><img src="partners/senka.png" alt="" loading="lazy" onerror="this.outerHTML='&lt;span class=&quot;logo-fallback&quot;&gt;SENKA&lt;/span&gt;'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= About / 스튜디오 ================= -->
+  <section class="about section" id="about" data-screen-label="About">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-copy reveal">
+          <p class="eyebrow">ABOUT STUDIO</p>
+          <h2 class="h2">좋은 컷은,<br>좋은 공간에서 나옵니다.</h2>
+          <p class="lead">스튜디오알피는 기획부터 촬영, 보정까지 한 팀이 끝내는 인하우스 커머스 포토 스튜디오입니다.
+자체 호리존 스튜디오와 하이엔드 장비로, 날씨·장소에 흔들리지 않는 일관된 퀄리티를 유지합니다.</p>
+          <ul class="about-points">
+            <li><span class="k">SPACE</span> 자체 호리존 스튜디오 — 무한 배경·대형 세트 촬영</li>
+            <li><span class="k">TOOL</span> 하이엔드 촬영 및 조명 장비</li>
+            <li><span class="k">TEAM</span> 기획·촬영·보정 100% 인하우스</li>
+            <li><span class="k">FOCUS</span> 제품·상세·화장품·F&amp;B·룩북·누끼 커머스 전문</li>
+          </ul>
+          <a class="btn btn-primary btn-lg" href="#contact">스튜디오 촬영 문의
+→</a>
+        </div>
+        <div class="about-visual reveal d1">
+          <figure class="shot big shot-photo" style="background-image:url('studio-space.jpg')"></figure>
+          <figure class="shot shot-photo" style="background-image:url('img-3473.jpg')"></figure>
+          <figure class="shot shot-photo" style="background-image:url('img-4606b.jpg')"></figure>
+        </div>
+      </div>
+
+      <!-- 통계 (실데이터 기반 — 수치 변경 시 여기만 교체) -->
+      <div class="about-stats reveal">
+        <div class="stat"><div class="n">100%</div><div class="l">인하우스 제작</div></div>
+        <div class="stat"><div class="n">3시간~</div><div class="l">출장촬영 패키지</div></div>
+        <div class="stat"><div class="n">20–30컷</div><div class="l">A컷 보정 납품</div></div>
+        <div class="stat"><div class="n">성수동</div><div class="l">자체 스튜디오</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 서비스 + 가격 ================= -->
+  <section class="services section" id="services" data-screen-label="Services">
+    <div class="wrap">
+      <div class="head reveal" style="max-width:46ch">
+        <p class="eyebrow">SERVICES</p>
+        <h2 class="h2" style="margin-top:18px">검색하신 그 사진,<br>그대로 찍습니다.</h2>
+      </div>
+
+      <div class="svc-grid">
+        <article class="svc reveal">
+          <div class="shot"><img src="svc-beauty.jpg" alt="제품 촬영"></div>
+          <div class="body">
+            <span class="tag">제품 · 상세컷</span>
+            <h3 class="h3">제품·상세컷 촬영</h3>
+            <p>쇼핑몰·오픈마켓용 깔끔한 연출컷·누끼.
+컷 단위로 견적을 드립니다.</p>
+            <a class="more" href="#contact">견적 문의 <span class="arrow">→</span></a>
+          </div>
+        </article>
+        <article class="svc reveal d1">
+          <div class="shot"><img src="svc-2.jpg" alt="상세페이지·커머스 촬영"></div>
+          <div class="body">
+            <span class="tag">상세 · 커머스</span>
+            <h3 class="h3">상세페이지·커머스 촬영</h3>
+            <p>구매 전환을 노린 상세·연출 패키지.
+스크롤을 멈추게 하는 컷으로.</p>
+            <a class="more" href="#contact">견적 문의 <span class="arrow">→</span></a>
+          </div>
+        </article>
+        <article class="svc reveal d2">
+          <div class="shot"><img src="svc-food.jpg" alt="음식·F&amp;B 연출 촬영"></div>
+          <div class="body">
+            <span class="tag">하이엔드</span>
+            <h3 class="h3">화장품·음식·룩북/모델</h3>
+            <p>브랜드 무드를 살린 하이엔드 화보.
+단가를 지키는 비주얼.</p>
+            <a class="more" href="#contact">견적 문의 <span class="arrow">→</span></a>
+          </div>
+        </article>
+      </div>
+
+      <!-- 가격감 -->
+      <div class="price reveal">
+        <div class="big tabular">40만원<small>부터</small></div>
+        <div class="pdesc">
+          <b>출장촬영 3시간</b> 기준 · <b>A컷 보정 20~30컷</b> 납품.<br>
+          룩북 · 누끼는 물량 기준 맞춤 견적으로 안내드립니다.
+          <div class="vat">VAT 별도 · 현장 여건에 따라 견적 조정</div>
+        </div>
+        <a class="btn btn-primary btn-lg" href="#contact">견적 받기 <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Process ================= -->
+  <section class="process section" id="process" data-screen-label="Process">
+    <div class="wrap">
+      <div class="head reveal">
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2 class="h2">문의부터 납품까지, 막힘없이.</h2>
+        <p class="lead">처음 맡기셔도 헷갈리지 않도록, 다섯 단계로 진행합니다.</p>
+      </div>
+      <div class="step-grid">
+        <div class="step reveal">
+          <span class="sn">01</span>
+          <h3 class="h3">문의·상담</h3>
+          <p>촬영종류·수량·일정만 남겨 주시면 영업시간 내 30분~1시간 안에 회신드립니다.</p>
+        </div>
+        <div class="step reveal d1">
+          <span class="sn">02</span>
+          <h3 class="h3">견적·일정 확정</h3>
+          <p>컷 수와 연출 범위에 맞춘 맞춤 견적을 드리고, 촬영일을 확정합니다.</p>
+        </div>
+        <div class="step reveal d2">
+          <span class="sn">03</span>
+          <h3 class="h3">촬영</h3>
+          <p>자체 호리존 스튜디오 또는 출장으로 하이엔드 촬영 및 조명 장비로 촬영합니다.</p>
+        </div>
+        <div class="step reveal d1">
+          <span class="sn">04</span>
+          <h3 class="h3">셀렉·보정</h3>
+          <p>A컷을 셀렉해 색·디테일·누끼까지 보정합니다. 쇼핑몰에 바로 쓰는 완성도로.</p>
+        </div>
+        <div class="step reveal d2">
+          <span class="sn">05</span>
+          <h3 class="h3">납품</h3>
+          <p>최종 파일을 정리해 전달합니다. 추가 컷·재보정도 협의 가능합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 후기 / Social proof ================= -->
+  <section class="voice section" id="voice" data-screen-label="Voice">
+    <div class="wrap">
+      <div class="head reveal">
+        <p class="eyebrow">CLIENT VOICE</p>
+        <h2 class="h2">맡겨본 브랜드가, 다시 찾습니다.</h2>
+      </div>
+      <div class="voice-grid">
+        <figure class="vcard reveal">
+          <blockquote class="quote">누끼부터 상세컷까지 톤이 일정해서, 받자마자 바로 상세페이지에 올렸어요. 재촬영 없이 끝난 게 처음이에요.</blockquote>
+          <figcaption class="by"><span class="who">○○몰 운영팀</span><span class="cat">제품·누끼</span></figcaption>
+        </figure>
+        <figure class="vcard reveal d1">
+          <blockquote class="quote">제품 무드를 정확히 잡아주셔서 브랜드 룩북 퀄리티가 한 단계 올라갔습니다. 다음 시즌도 맡길 예정이에요.</blockquote>
+          <figcaption class="by"><span class="who">○○ 뷰티 브랜드</span><span class="cat">화장품·룩북</span></figcaption>
+        </figure>
+        <figure class="vcard reveal d2">
+          <blockquote class="quote">문의부터 견적까지 정말 빨랐고, 촬영 당일 진행도 깔끔했어요. 메뉴 사진을 바꾸고 주문이 늘었습니다.</blockquote>
+          <figcaption class="by"><span class="who">○○ F&amp;B 매장</span><span class="cat">음식·메뉴</span></figcaption>
+        </figure>
+      </div>
+      <p class="fit"><b>이런 브랜드와 함께합니다</b> — 신상품이 자주 나오는 쇼핑몰·오픈마켓, 무드가 중요한 뷰티·패션, 메뉴 비주얼이 곧 매출인 F&amp;B.</p>
+      <div class="fit-tags">
+        <span>쇼핑몰 · 오픈마켓</span>
+        <span>뷰티 · 코스메틱</span>
+        <span>패션 · 룩북</span>
+        <span>F&amp;B · 메뉴</span>
+      </div>
+      <p class="note">※ 예시 후기입니다 — 실제 고객 동의를 받은 후기로 교체 예정.</p>
+    </div>
+  </section>
+
+  <!-- ================= 문의 CTA ================= -->
+  <section class="contact section" id="contact" data-screen-label="Contact">
+    <div class="wrap">
+      <div class="grid">
+        <div class="reveal">
+          <p class="eyebrow">CONTACT</p>
+          <h2 class="h2" style="margin-top:18px">제품 사진, 견적부터 받아보세요.
+30초면 충분합니다.</h2>
+          <div class="promise">
+            <div class="row"><span class="k">응대</span><span class="v">문의 주시면 영업시간 내 <b>30분~1시간 내 회신</b>드립니다.</span></div>
+            <div class="row"><span class="k">전화</span><span class="v"><b>070-8671-8216</b></span></div>
+            <div class="row"><span class="k">카카오</span><span class="v"><b>스튜디오RP 채널</b> 으로도 문의 가능합니다.</span></div>
+          </div>
+        </div>
+
+        <!-- 폼 -->
+        <div class="form-card reveal d1">
+          <form id="inquiry-form" novalidate>
+            <div class="form-grid">
+              <div class="field full" id="field-kind">
+                <label>촬영종류 <span class="req">*</span></label>
+                <div class="chips">
+                  <label class="chip"><input type="radio" name="kind" value="product" /><span>제품</span></label>
+                  <label class="chip"><input type="radio" name="kind" value="beauty" /><span>뷰티</span></label>
+                  <label class="chip"><input type="radio" name="kind" value="food" /><span>푸드</span></label>
+                  <label class="chip"><input type="radio" name="kind" value="fashion" /><span>패션</span></label>
+                  <label class="chip"><input type="radio" name="kind" value="commerce" /><span>커머스</span></label>
+                  <label class="chip"><input type="radio" name="kind" value="nukki" /><span>누끼</span></label>
+                  <label class="chip"><input type="radio" name="kind" value="etc" /><span>기타</span></label>
+                </div>
+                <span class="err-msg">촬영종류를 선택해 주세요.</span>
+              </div>
+
+              <div class="field">
+                <label for="company-input">업체 · 브랜드명 <span class="req">*</span></label>
+                <input class="control" id="company-input" data-required placeholder="예) 스튜디오알피 / OOO몰" />
+                <span class="err-msg">업체 또는 브랜드명을 적어주세요.</span>
+              </div>
+
+              <div class="field">
+                <label for="manager-input">담당자명 <span class="req">*</span></label>
+                <input class="control" id="manager-input" data-required placeholder="예) 김OO 매니저" />
+                <span class="err-msg">담당자 성함을 적어주세요.</span>
+              </div>
+
+              <div class="field full">
+                <label for="qty-input">제품 · 컷 수량 <span class="req">*</span></label>
+                <input class="control" id="qty-input" data-required placeholder="예) 제품 12종 / 누끼 30컷 / 룩북 1회" />
+                <span class="err-msg">대략적인 수량을 적어주세요.</span>
+              </div>
+
+              <div class="field">
+                <label for="date-input">희망 일정 <span class="req">*</span></label>
+                <input class="control" type="date" id="date-input" data-required />
+                <span class="err-msg">희망 일정을 선택해 주세요.</span>
+              </div>
+
+              <div class="field">
+                <label for="contact-input">연락처 (전화 or 카톡) <span class="req">*</span></label>
+                <input class="control" id="contact-input" data-required placeholder="010-0000-0000 또는 카톡 ID" />
+                <span class="err-msg">연락 가능한 번호나 카톡 ID를 입력해 주세요.</span>
+              </div>
+
+              <div class="field full">
+                <label for="email-input">이메일 <span class="opt">선택</span></label>
+                <input class="control" type="email" id="email-input" placeholder="name@email.com" />
+              </div>
+            </div>
+
+            <div class="consent" id="consent">
+              <label class="consent-row">
+                <input type="checkbox" id="consent-required" />
+                <span><b>[필수]</b> 개인정보 수집·이용에 동의합니다. <a href="#" class="consent-link" id="open-privacy">자세히 보기</a></span>
+              </label>
+              <label class="consent-row">
+                <input type="checkbox" id="consent-marketing" />
+                <span>[선택] 신규 서비스·프로모션 안내(재접촉) 수신에 동의합니다.</span>
+              </label>
+              <p class="consent-err" id="consent-err">개인정보 수집·이용 동의가 필요합니다.</p>
+            </div>
+
+            <div class="form-foot">
+              <span class="hint">‘촬영종류’만 정확하면 30초면 충분해요.</span>
+              <button type="submit" class="btn btn-primary btn-lg">견적 요청 보내기 <span class="arrow">→</span></button>
+            </div>
+          </form>
+
+          <!-- 완료 화면 -->
+          <div class="thanks" id="thanks">
+            <div class="check"></div>
+            <h3 class="h3">견적 요청이 접수됐습니다.</h3>
+            <p>영업시간 내 <b style="color:var(--fg)">30분~1시간</b> 안에 회신드릴게요.</p>
+            <div class="summary" id="thanks-summary"></div>
+            <button class="btn btn-ghost" id="thanks-reset">새 문의 작성</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- ================= 푸터 ================= -->
+  <footer class="footer" data-screen-label="Footer">
+    <div class="wrap">
+      <div class="top">
+        <div class="col brand">
+          <div class="wordmark">STUDIO
+RP
+.</div>
+          <p class="slogan">제품의 본질과 숨겨진 가치를 단 한 장의 프레임<br>쇼핑몰과 브랜드를 위한 커머스 사진 스튜디오.</p>
+        </div>
+        <div class="col">
+          <h4>Contact</h4>
+          <a href="tel:070-8671-8216">070-8671-8216</a>
+          <a href="mailto:contact@studiorp.co.kr">contact@studiorp.co.kr</a>
+          <a href="https://pf.kakao.com/_yRkxhX" target="_blank" rel="noopener">카카오톡 채널 문의</a>
+        </div>
+        <div class="col">
+          <h4>Studio</h4>
+          <p>서울특별시 성동구 상원길 62, B1</p>
+          <a href="#services">서비스 안내</a>
+          <a href="#contact">촬영 문의</a>
+        </div>
+      </div>
+
+      <div class="biz">
+        <span>주식회사 크래커스컴퍼니</span>
+        <span>대표이사 김동현</span>
+        <span>사업자등록번호 638-81-03868</span>
+        <span>서울특별시 성동구 상원길 62, B1</span>
+      </div>
+
+      <div class="legal">
+        <span>© 2026 STUDIO RP — Crackers Company. All rights reserved.</span>
+        <span class="film-link">영상 촬영이 필요하신가요? → <a href="#">비토그래퍼(영상) 안내</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= 플로팅 CTA ================= -->
+  <div class="float-cta" aria-label="빠른 문의">
+    <div class="float-row">
+      <a class="fab fab-tel" href="tel:070-8671-8216" aria-label="전화 문의">전화</a>
+      <a class="fab fab-kakao" href="https://pf.kakao.com/_yRkxhX" target="_blank" rel="noopener" aria-label="카카오톡 문의">카톡</a>
+    </div>
+    <a class="fab-main" href="#contact">촬영 문의하기 <span class="arrow">→</span></a>
+  </div>
+
+  <!-- ================= 개인정보 처리방침 모달 ================= -->
+  <div class="modal" id="privacy-modal" role="dialog" aria-modal="true" aria-label="개인정보 처리방침">
+    <div class="modal-bg" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" data-close aria-label="닫기">✕</button>
+      <h3 class="h3">개인정보 수집·이용 안내</h3>
+      <p class="m-sub">스튜디오RP · 주식회사 크래커스컴퍼니</p>
+      <h4>수집 항목</h4>
+      <p>업체·브랜드명, 담당자명, 연락처(전화·카카오·이메일), 촬영종류·수량·일정 등 문의 내용</p>
+      <h4>수집·이용 목적</h4>
+      <p>촬영 문의 접수 및 상담·견적 회신 / (선택 동의 시) 신규 서비스·프로모션 안내</p>
+      <h4>보관 및 파기</h4>
+      <p>문의 처리 완료 후 1년 경과 시 또는 동의 철회 시 지체 없이 파기합니다.</p>
+      <h4>동의 거부 권리</h4>
+      <p>동의를 거부하실 수 있으나, 필수 항목 미동의 시 문의 상담이 제한됩니다.</p>
+      <p class="m-sub" style="margin-top:22px">※ 요약본입니다. 정식 개인정보 처리방침은 별도 페이지에서 확인하실 수 있습니다.</p>
+    </div>
+  </div>
+
+    <script>
+/* ============================================================
+   STUDIO RP — 페이지 인터랙션 (vanilla)
+   ============================================================ */
+(function () {
+  "use strict";
+
+  /* ---- 네비 스크롤 상태 ---- */
+  const nav = document.querySelector(".nav");
+  const onScroll = () => {
+    nav.classList.toggle("scrolled", window.scrollY > 24);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  /* ---- Hero A 슬라이드쇼 ---- */
+  function initHeroA() {
+    const stage = document.querySelector(".heroA .stage");
+    if (!stage) return;
+    const slides = [...stage.querySelectorAll(".slide")];
+    const dots = [...document.querySelectorAll(".slide-dots button")];
+    const metaEls = document.querySelectorAll(".heroA .frame-meta .cur");
+    if (!slides.length) return;
+    let i = 0, timer = null;
+    const DURATION = 5200;
+
+    function go(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach((s, k) => s.classList.toggle("on", k === i));
+      dots.forEach((d, k) => d.classList.toggle("on", k === i));
+      metaEls.forEach((m) => (m.textContent = String(i + 1).padStart(2, "0")));
+    }
+    function start() { stop(); timer = setInterval(() => go(i + 1), DURATION); }
+    function stop() { if (timer) clearInterval(timer); }
+
+    dots.forEach((d, k) => d.addEventListener("click", () => { go(k); start(); }));
+    go(0); start();
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stop(); else start();
+    });
+  }
+  initHeroA();
+
+  /* ---- Scroll reveal ---- */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  /* ---- 플로팅 CTA: 푸터 근처에서 숨김 ---- */
+  const floatCta = document.querySelector(".float-cta");
+  const footer = document.querySelector(".footer");
+  if (floatCta && footer) {
+    const fObs = new IntersectionObserver((entries) => {
+      entries.forEach((e) => floatCta.classList.toggle("hide", e.isIntersecting));
+    }, { threshold: 0.05 });
+    fObs.observe(footer);
+  }
+
+  /* ---- 모바일 메뉴 (간단: 문의로 스크롤) ---- */
+  const toggle = document.querySelector(".nav-toggle");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      document.querySelector("#contact").scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  /* ---- 문의 폼: 검증 + 완료 화면 ---- */
+  const form = document.querySelector("#inquiry-form");
+  if (form) {
+    const thanks = document.querySelector("#thanks");
+    const KINDS = {
+      product: "제품", beauty: "뷰티", food: "푸드",
+      fashion: "패션", commerce: "커머스", nukki: "누끼", etc: "기타",
+    };
+
+    function setInvalid(field, on) {
+      field.classList.toggle("invalid", on);
+      const c = field.querySelector(".control");
+      if (c) c.classList.toggle("err", on);
+    }
+
+    function validate() {
+      let ok = true;
+      // 촬영종류 (라디오)
+      const kindChecked = form.querySelector('input[name="kind"]:checked');
+      const kindField = form.querySelector("#field-kind");
+      if (!kindChecked) { kindField.classList.add("invalid"); ok = false; }
+      else kindField.classList.remove("invalid");
+
+      // 텍스트/필수 컨트롤
+      form.querySelectorAll("[data-required]").forEach((c) => {
+        const field = c.closest(".field");
+        const empty = !c.value.trim();
+        setInvalid(field, empty);
+        if (empty) ok = false;
+      });
+
+      // 연락처 형식 (숫자/하이픈 7자리+ 또는 카톡 ID)
+      const contact = form.querySelector("#contact-input");
+      if (contact && contact.value.trim()) {
+        const v = contact.value.trim();
+        const digits = v.replace(/[^0-9]/g, "");
+        const looksPhone = digits.length >= 9;
+        const looksId = /^[a-zA-Z0-9._-]{3,}$/.test(v);
+        if (!looksPhone && !looksId) {
+          setInvalid(contact.closest(".field"), true); ok = false;
+        }
+      }
+      // 개인정보 필수 동의
+      const consentReq = form.querySelector("#consent-required");
+      const consentBox = form.querySelector("#consent");
+      if (consentReq && !consentReq.checked) { if (consentBox) consentBox.classList.add("invalid"); ok = false; }
+      else if (consentBox) consentBox.classList.remove("invalid");
+
+      return ok;
+    }
+
+    // 입력 시 에러 해제
+    form.querySelectorAll(".control").forEach((c) => {
+      c.addEventListener("input", () => setInvalid(c.closest(".field"), false));
+      c.addEventListener("change", () => setInvalid(c.closest(".field"), false));
+    });
+    form.querySelectorAll('input[name="kind"]').forEach((r) => {
+      r.addEventListener("change", () => form.querySelector("#field-kind").classList.remove("invalid"));
+    });
+    const cReq = form.querySelector("#consent-required");
+    if (cReq) cReq.addEventListener("change", () => { const cb = form.querySelector("#consent"); if (cb) cb.classList.remove("invalid"); });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!validate()) {
+        const firstErr = form.querySelector(".field.invalid");
+        if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      // 요약 만들기
+      const kind = KINDS[form.querySelector('input[name="kind"]:checked').value] || "—";
+      const company = form.querySelector("#company-input").value.trim() || "—";
+      const manager = form.querySelector("#manager-input").value.trim() || "—";
+      const qty = form.querySelector("#qty-input").value.trim() || "—";
+      const when = form.querySelector("#date-input").value || "일정 협의";
+      const sumEl = document.querySelector("#thanks-summary");
+      if (sumEl) {
+        sumEl.innerHTML = `<b>${escapeHtml(company)}</b> · ${escapeHtml(manager)} 님<br>촬영종류 <b>${kind}</b> · 수량 <b>${escapeHtml(qty)}</b> · 희망일 <b>${escapeHtml(when)}</b>`;
+      }
+      // 완료 화면
+      thanks.classList.add("show");
+      // (실서비스: 여기서 폼 전송 + thank-you 전환이벤트 fire)
+    });
+
+    const resetBtn = document.querySelector("#thanks-reset");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        thanks.classList.remove("show");
+        form.reset();
+        form.querySelectorAll(".field.invalid").forEach((f) => f.classList.remove("invalid"));
+        form.querySelectorAll(".control.err").forEach((c) => c.classList.remove("err"));
+      });
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (m) => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
+    ));
+  }
+
+  /* ---- 포트폴리오 필터 ---- */
+  /* ---- 포트폴리오 랜덤 셔플 (전체 보기 시 랜덤 노출) ---- */
+  (function shuffleWorks() {
+    const grid = document.querySelector(".work-grid");
+    if (!grid) return;
+    const items = [...grid.children];
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    items.forEach((it) => grid.appendChild(it));
+  })();
+
+  const workFilter = document.querySelector(".work-filter");
+  if (workFilter) {
+    const fbtns = [...workFilter.querySelectorAll(".fbtn")];
+    const witems = [...document.querySelectorAll(".work-grid .work-item")];
+    const workMore = document.querySelector("#work-more");
+    const STEP = 12;            // 4줄(3열 × 4)
+    let curFilter = "all";
+    let limit = STEP;
+    function renderWorks() {
+      const matched = witems.filter((it) => curFilter === "all" || it.dataset.cat === curFilter);
+      witems.forEach((it) => it.classList.add("hide"));
+      matched.slice(0, limit).forEach((it) => it.classList.remove("hide"));
+      if (workMore) workMore.style.display = matched.length > limit ? "" : "none";
+    }
+    if (workMore) workMore.addEventListener("click", () => { limit += STEP; renderWorks(); });
+    workFilter.addEventListener("click", (e) => {
+      const btn = e.target.closest(".fbtn");
+      if (!btn) return;
+      fbtns.forEach((b) => b.classList.toggle("on", b === btn));
+      curFilter = btn.dataset.filter;
+      limit = STEP;             // 필터 바꾸면 다시 4줄부터
+      renderWorks();
+    });
+    renderWorks();              // 초기: 4줄만
+  }
+
+  /* ---- 처리방침 모달 ---- */
+  const privacyModal = document.querySelector("#privacy-modal");
+  const openPrivacy = document.querySelector("#open-privacy");
+  if (privacyModal && openPrivacy) {
+    openPrivacy.addEventListener("click", (e) => { e.preventDefault(); privacyModal.classList.add("open"); });
+    privacyModal.querySelectorAll("[data-close]").forEach((el) =>
+      el.addEventListener("click", () => privacyModal.classList.remove("open")));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") privacyModal.classList.remove("open"); });
+  }
+
+  /* ---- 부드러운 앵커 스크롤 ---- */
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href");
+      if (id.length < 2) return;
+      const t = document.querySelector(id);
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    });
+  });
+})();
+
+  </script>
+
+</body>
+</html>
