@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>견적 요청 접수 완료 | 스튜디오RP</title>
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
+  <!-- ▼▼ [대표 입력 ①] GA4 — index.html과 똑같은 측정ID(G-…)를 아래 두 군데 G-G65P0QYNGM에 붙여넣기 ▼▼ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G65P0QYNGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G65P0QYNGM');
+    // 이 페이지 도달 = 문의 완료 = 리드 전환. GA4 전환 이벤트 발사.
+    gtag('event', 'generate_lead', { event_category: 'inquiry', value: 1 });
+  </script>
+  <!-- ▲▲ GA4 끝 ▲▲ -->
+
+  <!-- ▼ [대표 입력 ②] 네이버 프리미엄 로그분석 '전환 스크립트'(광고관리자에서 발급)를 이 자리에 붙여넣기 ▼ -->
+  <!-- (네이버 전환 스크립트 위치) -->
+  <!-- ▲ 네이버 끝 ▲ -->
+
+  <style>
+    :root{ --bg:#0c0c0d; --fg:#f4f4f5; --muted:#9a9a9f; --line:#26262a; --pt:#f37021; }
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    html,body{ height:100%; }
+    body{
+      font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;
+      background:var(--bg); color:var(--fg);
+      display:flex; align-items:center; justify-content:center; min-height:100%;
+      padding:40px 24px; text-align:center; line-height:1.6;
+    }
+    .card{ max-width:520px; width:100%; }
+    .check{
+      width:72px; height:72px; border-radius:50%;
+      border:2px solid var(--pt); margin:0 auto 28px;
+      display:flex; align-items:center; justify-content:center; position:relative;
+    }
+    .check::after{
+      content:""; width:22px; height:12px;
+      border-left:3px solid var(--pt); border-bottom:3px solid var(--pt);
+      transform:rotate(-45deg) translate(1px,-2px);
+    }
+    h1{ font-size:26px; font-weight:700; letter-spacing:-0.02em; margin-bottom:14px; }
+    p{ color:var(--muted); font-size:16px; }
+    p b{ color:var(--fg); }
+    .contact{
+      margin-top:32px; padding-top:24px; border-top:1px solid var(--line);
+      display:flex; flex-direction:column; gap:8px; font-size:15px;
+    }
+    .contact a{ color:var(--fg); text-decoration:none; }
+    .contact .k{ color:var(--muted); margin-right:8px; }
+    .home{
+      display:inline-block; margin-top:28px; padding:13px 26px;
+      border:1px solid var(--line); border-radius:10px;
+      color:var(--fg); text-decoration:none; font-size:15px; transition:.2s;
+    }
+    .home:hover{ border-color:var(--pt); color:var(--pt); }
+    .wm{ margin-top:40px; font-size:12px; letter-spacing:.18em; color:var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check"></div>
+    <h1>견적 요청이 접수됐습니다.</h1>
+    <p>영업시간 내 <b>30분~1시간</b> 안에 회신드릴게요.<br>빠른 상담은 전화·카카오톡으로도 가능합니다.</p>
+
+    <div class="contact">
+      <div><span class="k">전화</span><a href="tel:070-8671-8216">070-8671-8216</a></div>
+      <div><span class="k">이메일</span><a href="mailto:contact@studiorp.co.kr">contact@studiorp.co.kr</a></div>
+      <div><span class="k">카카오톡</span><a href="https://pf.kakao.com/_yRkxhX" target="_blank" rel="noopener">스튜디오RP 채널</a></div>
+    </div>
+
+    <a class="home" href="https://studiorp.co.kr/">← 홈으로 돌아가기</a>
+    <div class="wm">STUDIO RP.</div>
+  </div>
+</body>
+</html>

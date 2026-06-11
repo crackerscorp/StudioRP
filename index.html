@@ -9,6 +9,17 @@
   <meta property="og:description" content="팔리는 제품 사진, 스튜디오알피가 찍습니다. 상세페이지·화장품·룩북·누끼 커머스 사진." />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
+  <!-- ▼▼ [대표 입력 ①] Google Analytics 4 — GA4 속성 만들고 받은 측정ID(G-로 시작)를 아래 두 군데 G-G65P0QYNGM에 붙여넣기 ▼▼ -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G65P0QYNGM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G65P0QYNGM');
+  </script>
+  <!-- ▲▲ GA4 끝 ▲▲ -->
+
   <style>
 /* ============================================================
    STUDIO RP — 다크·하이엔드 모노크롬 랜딩
@@ -1228,7 +1239,10 @@ RP
 
         <!-- 폼 -->
         <div class="form-card reveal d1">
-          <form id="inquiry-form" novalidate>
+          <!-- Formspree 연결 완료 (수신: contact@studiorp.co.kr) -->
+          <form id="inquiry-form" action="https://formspree.io/f/xvznqekz" method="POST" novalidate>
+            <input type="hidden" name="_subject" value="[스튜디오RP] 새 견적 문의" />
+            <input type="hidden" name="_next" value="https://studiorp.co.kr/thanks.html" />
             <div class="form-grid">
               <div class="field full" id="field-kind">
                 <label>촬영종류 <span class="req">*</span></label>
@@ -1246,47 +1260,47 @@ RP
 
               <div class="field">
                 <label for="company-input">업체 · 브랜드명 <span class="req">*</span></label>
-                <input class="control" id="company-input" data-required placeholder="예) 스튜디오알피 / OOO몰" />
+                <input class="control" id="company-input" name="업체브랜드명" data-required placeholder="예) 스튜디오알피 / OOO몰" />
                 <span class="err-msg">업체 또는 브랜드명을 적어주세요.</span>
               </div>
 
               <div class="field">
                 <label for="manager-input">담당자명 <span class="req">*</span></label>
-                <input class="control" id="manager-input" data-required placeholder="예) 김OO 매니저" />
+                <input class="control" id="manager-input" name="담당자명" data-required placeholder="예) 김OO 매니저" />
                 <span class="err-msg">담당자 성함을 적어주세요.</span>
               </div>
 
               <div class="field full">
                 <label for="qty-input">제품 · 컷 수량 <span class="req">*</span></label>
-                <input class="control" id="qty-input" data-required placeholder="예) 제품 12종 / 누끼 30컷 / 룩북 1회" />
+                <input class="control" id="qty-input" name="제품_컷수량" data-required placeholder="예) 제품 12종 / 누끼 30컷 / 룩북 1회" />
                 <span class="err-msg">대략적인 수량을 적어주세요.</span>
               </div>
 
               <div class="field">
                 <label for="date-input">희망 일정 <span class="req">*</span></label>
-                <input class="control" type="date" id="date-input" data-required />
+                <input class="control" type="date" id="date-input" name="희망일정" data-required />
                 <span class="err-msg">희망 일정을 선택해 주세요.</span>
               </div>
 
               <div class="field">
                 <label for="contact-input">연락처 (전화 or 카톡) <span class="req">*</span></label>
-                <input class="control" id="contact-input" data-required placeholder="010-0000-0000 또는 카톡 ID" />
+                <input class="control" id="contact-input" name="연락처" data-required placeholder="010-0000-0000 또는 카톡 ID" />
                 <span class="err-msg">연락 가능한 번호나 카톡 ID를 입력해 주세요.</span>
               </div>
 
               <div class="field full">
                 <label for="email-input">이메일 <span class="opt">선택</span></label>
-                <input class="control" type="email" id="email-input" placeholder="name@email.com" />
+                <input class="control" type="email" id="email-input" name="이메일" placeholder="name@email.com" />
               </div>
             </div>
 
             <div class="consent" id="consent">
               <label class="consent-row">
-                <input type="checkbox" id="consent-required" />
+                <input type="checkbox" id="consent-required" name="개인정보동의" value="동의" />
                 <span><b>[필수]</b> 개인정보 수집·이용에 동의합니다. <a href="#" class="consent-link" id="open-privacy">자세히 보기</a></span>
               </label>
               <label class="consent-row">
-                <input type="checkbox" id="consent-marketing" />
+                <input type="checkbox" id="consent-marketing" name="마케팅동의" value="동의" />
                 <span>[선택] 신규 서비스·프로모션 안내(재접촉) 수신에 동의합니다.</span>
               </label>
               <p class="consent-err" id="consent-err">개인정보 수집·이용 동의가 필요합니다.</p>
@@ -1512,25 +1526,15 @@ RP
     if (cReq) cReq.addEventListener("change", () => { const cb = form.querySelector("#consent"); if (cb) cb.classList.remove("invalid"); });
 
     form.addEventListener("submit", (e) => {
-      e.preventDefault();
+      // 검증 실패할 때만 막는다. 통과하면 막지 않아 폼이 Formspree로 실제 전송된다.
       if (!validate()) {
+        e.preventDefault();
         const firstErr = form.querySelector(".field.invalid");
         if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
-      // 요약 만들기
-      const kind = KINDS[form.querySelector('input[name="kind"]:checked').value] || "—";
-      const company = form.querySelector("#company-input").value.trim() || "—";
-      const manager = form.querySelector("#manager-input").value.trim() || "—";
-      const qty = form.querySelector("#qty-input").value.trim() || "—";
-      const when = form.querySelector("#date-input").value || "일정 협의";
-      const sumEl = document.querySelector("#thanks-summary");
-      if (sumEl) {
-        sumEl.innerHTML = `<b>${escapeHtml(company)}</b> · ${escapeHtml(manager)} 님<br>촬영종류 <b>${kind}</b> · 수량 <b>${escapeHtml(qty)}</b> · 희망일 <b>${escapeHtml(when)}</b>`;
-      }
-      // 완료 화면
-      thanks.classList.add("show");
-      // (실서비스: 여기서 폼 전송 + thank-you 전환이벤트 fire)
+      // 검증 통과 → preventDefault를 호출하지 않음 = 폼이 action(Formspree)으로 정상 POST된다.
+      // 전송 성공 시 _next 설정에 따라 thanks.html로 자동 이동 → 거기서 전환(generate_lead)이 측정된다.
     });
 
     const resetBtn = document.querySelector("#thanks-reset");
