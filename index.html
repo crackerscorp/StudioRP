@@ -1242,7 +1242,8 @@ RP
           <!-- Formspree 연결 완료 (수신: contact@studiorp.co.kr) -->
           <form id="inquiry-form" action="https://formspree.io/f/xvznqekz" method="POST" novalidate>
             <input type="hidden" name="_subject" value="[스튜디오RP] 새 견적 문의" />
-            <input type="hidden" name="_next" value="https://studiorp.co.kr/thanks.html" />
+            <!-- _next 제거: Formspree 무료 플랜 미지원 확인(2026-06-11). 리다이렉트는 submit 핸들러의 fetch 성공 콜백이 담당 -->
+
             <div class="form-grid">
               <div class="field full" id="field-kind">
                 <label>촬영종류 <span class="req">*</span></label>
@@ -1526,15 +1527,30 @@ RP
     if (cReq) cReq.addEventListener("change", () => { const cb = form.querySelector("#consent"); if (cb) cb.classList.remove("invalid"); });
 
     form.addEventListener("submit", (e) => {
-      // 검증 실패할 때만 막는다. 통과하면 막지 않아 폼이 Formspree로 실제 전송된다.
+      // Formspree 무료 플랜은 _next 커스텀 리다이렉트를 지원하지 않는다 (2026-06-11 실측 확인).
+      // → 항상 preventDefault 후 JS(fetch)로 전송하고, 성공 시 우리 thanks.html로 직접 이동시킨다.
+      e.preventDefault();
       if (!validate()) {
-        e.preventDefault();
         const firstErr = form.querySelector(".field.invalid");
         if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
         return;
       }
-      // 검증 통과 → preventDefault를 호출하지 않음 = 폼이 action(Formspree)으로 정상 POST된다.
-      // 전송 성공 시 _next 설정에 따라 thanks.html로 자동 이동 → 거기서 전환(generate_lead)이 측정된다.
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.innerHTML; submitBtn.textContent = "전송 중…"; }
+      fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("submit_failed");
+          // 전송 성공 → 감사 페이지로 이동 → 거기서 전환(generate_lead)이 측정된다.
+          window.location.href = new URL("thanks.html", window.location.href).href;
+        })
+        .catch(() => {
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = submitBtn.dataset.label || "견적 요청 보내기"; }
+          alert("전송에 실패했습니다. 잠시 후 다시 시도하시거나,\n전화 070-8671-8216 또는 카카오톡 채널로 문의해 주세요.");
+        });
     });
 
     const resetBtn = document.querySelector("#thanks-reset");
