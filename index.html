@@ -1543,6 +1543,8 @@ RP
       }
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.innerHTML; submitBtn.textContent = "전송 중…"; }
+      // 리드 → Notion 자동저장 (best-effort). 실패해도 아래 Formspree로 리드 확보 — thanks 흐름 영향 없음.
+      fetch("https://srp-lead.id-2c1.workers.dev", { method: "POST", body: new FormData(form) }).catch(() => {});
       fetch(form.action, {
         method: "POST",
         body: new FormData(form),
