@@ -19,9 +19,18 @@
   </script>
   <!-- ▲▲ GA4 끝 ▲▲ -->
 
-  <!-- ▼ [대표 입력 ②] 네이버 프리미엄 로그분석 '전환 스크립트'(광고관리자에서 발급)를 이 자리에 붙여넣기 ▼ -->
-  <!-- (네이버 전환 스크립트 위치) -->
-  <!-- ▲ 네이버 끝 ▲ -->
+  <!-- ▼ 네이버 프리미엄 로그분석 '전환 스크립트' — 견적요청 완료 = 전환(유형 2: 신청/예약) ▼ -->
+  <script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+  <script type="text/javascript">
+    if(!wcs_add) var wcs_add = {};
+    wcs_add["wa"] = "s_bf8f4325cb6";
+    if(!_nasa) var _nasa = {};
+    if(window.wcs){
+      _nasa["cnv"] = wcs.cnv("2","1");  // 2 = 신청/예약(견적요청 리드)
+      wcs_do(_nasa);
+    }
+  </script>
+  <!-- ▲ 네이버 전환 스크립트 끝 ▲ -->
 
   <style>
     :root{ --bg:#0c0c0d; --fg:#f4f4f5; --muted:#9a9a9f; --line:#26262a; --pt:#f37021; }
