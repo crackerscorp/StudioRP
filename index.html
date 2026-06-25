@@ -1650,5 +1650,17 @@ RP
 
   </script>
 
+  <!-- ▼ 카카오톡 클릭 추적 (GA4 contact_kakao) — 카톡 리드 가시화 ▼ -->
+  <script>
+  (function(){
+    document.querySelectorAll('a[href*="pf.kakao.com"]').forEach(function(a){
+      a.addEventListener('click', function(){
+        try { if (typeof gtag === 'function') gtag('event','contact_kakao',{event_category:'inquiry',event_label:'kakao_channel',value:1}); } catch(e){}
+        try { if (window.wcs) { var _n=window._nasa||{}; _n.cnv=wcs.cnv("4","1"); wcs_do(_n); } } catch(e){}
+      });
+    });
+  })();
+  </script>
+  <!-- ▲ 카카오톡 클릭 추적 끝 ▲ -->
 </body>
 </html>
