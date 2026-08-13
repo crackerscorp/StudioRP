@@ -1542,6 +1542,22 @@ RP
     const cReq = form.querySelector("#consent-required");
     if (cReq) cReq.addEventListener("change", () => { const cb = form.querySelector("#consent"); if (cb) cb.classList.remove("invalid"); });
 
+    // 광고 유입 태깅 — 첫 진입 URL 파라미터·리퍼러로 판별해 세션에 보존, 폼 제출 시 Worker에 전달.
+    // 값은 노션 잠재고객 DB '유입경로' 옵션명(구글광고/네이버광고/검색)과 일치해야 한다.
+    try {
+      const _q = new URLSearchParams(location.search);
+      const _src = (_q.get("utm_source") || "").toLowerCase();
+      const _med = (_q.get("utm_medium") || "").toLowerCase();
+      const _ref = document.referrer || "";
+      let _tag = "";
+      if (_q.get("gclid") || _q.get("gbraid") || _q.get("wbraid") || (_src === "google" && /cpc|ppc|paid/.test(_med))) _tag = "구글광고";
+      else if (_q.get("n_ad") || _q.get("n_query") || _q.get("n_media") || /ad\.search\.naver\.com|adcr\.naver\.com/.test(_ref) || (_src === "naver" && /cpc|ppc|paid|brand/.test(_med))) _tag = "네이버광고";
+      else if (/^https?:\/\/([^/]*\.)?(google|naver|bing|daum)\./.test(_ref)) _tag = "검색";
+      if (_tag) sessionStorage.setItem("srp_ad_tag", _tag);
+      const _kw = _q.get("utm_term") || _q.get("n_query") || "";
+      if (_kw) sessionStorage.setItem("srp_ad_kw", _kw);
+    } catch (err) {}
+
     form.addEventListener("submit", (e) => {
       // Formspree 무료 플랜은 _next 커스텀 리다이렉트를 지원하지 않는다 (2026-06-11 실측 확인).
       // → 항상 preventDefault 후 JS(fetch)로 전송하고, 성공 시 우리 thanks.html로 직접 이동시킨다.
@@ -1554,7 +1570,14 @@ RP
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset.label = submitBtn.innerHTML; submitBtn.textContent = "전송 중…"; }
       // 리드 → Notion 자동저장 (best-effort). 실패해도 아래 Formspree로 리드 확보 — thanks 흐름 영향 없음.
-      fetch("https://srp-lead.id-2c1.workers.dev", { method: "POST", body: new FormData(form) }).catch(() => {});
+      const leadData = new FormData(form);
+      try {
+        const adTag = sessionStorage.getItem("srp_ad_tag");
+        const adKw = sessionStorage.getItem("srp_ad_kw");
+        if (adTag) leadData.append("유입태그", adTag);
+        if (adKw) leadData.append("유입키워드", adKw);
+      } catch (err) {}
+      fetch("https://srp-lead.id-2c1.workers.dev", { method: "POST", body: leadData }).catch(() => {});
       fetch(form.action, {
         method: "POST",
         body: new FormData(form),
